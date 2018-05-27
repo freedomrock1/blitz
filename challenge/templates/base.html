@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    {% block head %}
+    <link rel="stylesheet" href="static/bootstrap.min.css">
+  
+    <script src="static/jquery.min.js"></script>
+    <script src="static/bootstrap.min.js"></script>
+  
+    <link rel="stylesheet" href="mystyle.css" />
+    <title>Challenge{% block title %} {% endblock %} Page</title>
+    {% endblock %}
+</head>
+<body>
+        <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                  <div class="navbar-header" >
+                    <a class="navbar-brand" href="/">Challenge</a>
+                  </div>
+                  <ul class="nav navbar-nav">
+                  <!--
+                    <li ><a href="?">Home</a></li>   -->
+                    <li ><a href="/">Main</a></li>
+                    <li ><a href="companies">Company Menu</a></li>
+                    <li ><a href="jobs">Job Listings</a></li>
+
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                  
+              <!-- 
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                  
+                  -->
+                  </ul>
+                </div>
+              </nav> 
+              
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+        {% block footer %}
+        &copy; Copyright 2018 by <a href="">CHF</a>.
+        {% endblock %}
+    </div>
+</body>
+</html>

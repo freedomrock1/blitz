@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %} Jobs {% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1>Welcome to {{company_name}} Job List!</h1>
+        <ul>
+            {% for position in positions  %}
+                <li>{{ loop.index }} {{position}} {{ locations[loop.index-1] }}</li>
+                {% endfor %}
+        </ul>
+{% endblock %}
+
