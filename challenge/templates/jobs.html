@@ -6,15 +6,25 @@
     {{ super() }}
     <style type="text/css">
         .important { color: #336699; }
+        .panel-body{
+            margin:10px;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
     <h1>Welcome to {{company_name}} Job List!</h1>
-        <ul>
+        <div  class="panel-group">
             {% for position in positions  %}
-                <li>{{ loop.index }} {{position}} {{ locations[loop.index-1] }}</li>
-                {% endfor %}
-        </ul>
+                <div class="panel  panel-default col-sm-3"> 
+                    <div class="panel-heading">{{ loop.index }}) {{position}}</div> 
+                    <div class="panel-body"> {{ locations[loop.index-1] }} <br />
+                         <a href="{{ links[loop.index-1] }}">Job Site</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+{% endblock %}
+{% block footer %}
 {% endblock %}
 

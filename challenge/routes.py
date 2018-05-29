@@ -7,8 +7,10 @@ import scraper
 #globals
 app = Flask(__name__)
 
-stuff=scraper.scrape(scraper.sites[0], None)
+#stuff=scraper.scrape(scraper.sites[0], None)
+companylist=scraper.companies
 
+stuff=scraper.scrapers()
 #defs
 
 
@@ -20,21 +22,32 @@ def index():
 
 @app.route('/companies')
 def companies():
-    return render_template('companies.html')
+    print(companylist[0])
+    return render_template('companies.html', companies=companylist)
 
-@app.route('/jobs')
+@app.route('/jobs/')
 def jobs0():
     company="Twillio"
+    index=0
     redderedDoc=render_template('jobs.html', company_name=company, 
-        positions=stuff[0], locations=stuff[1], links=stuff[2], jobs=stuff)
+        positions=stuff[index][0], locations=stuff[index][1], links=stuff[index][2], jobs=stuff)
     print(company+"\n")
     return redderedDoc
 
 @app.route('/jobs/<company>')
 def jobs(company):
-    return render_template('jobs.html')
+    index=companylist.index(company)
+    #print(company+" = "+index)
+    print(index)
+    redderedDoc=render_template('jobs.html', company_name=company, 
+        positions=stuff[index][0], locations=stuff[index][1], links=stuff[index][2], jobs=stuff)
+    print(company+"\n")
+    return redderedDoc
 
-
+@app.before_request
+def before_request():
+    #check for updates
+    pass
 
 
 # main

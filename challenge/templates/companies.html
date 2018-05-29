@@ -10,8 +10,10 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Index</h1>
-    <p class="important">
-      Welcome to my awesome homepage.
-    </p>
+    <h1>Our Current Companies</h1>
+        <ul>
+        {% for company in companies  %}
+            <li><a href="jobs/{{company}}"> {{company}} </a> </li>
+        {% endfor %}
+        </ul>
 {% endblock %}

@@ -3,12 +3,15 @@
 <html lang="en">
 <head>
     {% block head %}
-    <link rel="stylesheet" href="static/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
   
-    <script src="static/jquery.min.js"></script>
-    <script src="static/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
   
-    <link rel="stylesheet" href="mystyle.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}" />
+    <style >
+
+    </style>
     <title>Challenge{% block title %} {% endblock %} Page</title>
     {% endblock %}
 </head>
@@ -22,8 +25,8 @@
                   <!--
                     <li ><a href="?">Home</a></li>   -->
                     <li ><a href="/">Main</a></li>
-                    <li ><a href="companies">Company Menu</a></li>
-                    <li ><a href="jobs">Job Listings</a></li>
+                    <li ><a href="{{ url_for('companies') }}">Company Menu</a></li>
+                    <li ><a href="{{ url_for('jobs', company='Twillio')  }}">Job Listings</a></li>
 
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
@@ -38,10 +41,10 @@
               </nav> 
               
     <div id="content">{% block content %}{% endblock %}</div>
+    {% block footer %}
     <div id="footer">
-        {% block footer %}
         &copy; Copyright 2018 by <a href="">CHF</a>.
-        {% endblock %}
     </div>
+    {% endblock %}
 </body>
 </html>
