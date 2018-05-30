@@ -1,30 +1,42 @@
 #  imports
 from lxml import html
 import requests 
+from bs4 import BeautifulSoup as bs
+import time
 
 # globals
-
-
-
 companies=['Twillio','Airbnb','Yext']
 
+#interval between scrapes in seconds
+interval=15*60
 
-sites=['http://localhost/blitz/twilio-jobs.html',
+sites=[]
+
+sites=['https://www.twilio.com/company/jobs',
+        'https://www.airbnb.com/careers/departments',
+        'https://www.yext.com/careers/open-positions/']
+
+
+sites+=['http://localhost/blitz/twilio-jobs.html',
         'http://localhost/blitz/airbnb/deparmentCareersAirbnb.html',
         'http://localhost/blitz/YextCareers.html']
 
-#sites=['https://www.twilio.com/company/jobs',
-# 'https://www.airbnb.com/careers/departments',
-# 'https://www.yext.com/careers/open-positions/']
+    #Twillio    @Greenhouse [6]8
+    #Yext       @Greenhouse [7]9
+sites+=['https://boards.greenhouse.io/twilio/',
+        'https://boards.greenhouse.io/yext/']
+
+sites+=['http://localhost/blitz/GreenhouseTwilio.html',
+        'http://localhost/blitz/GreenhouseYext.html']
 
 paths=[]
-# twillio
+    # twillio
 paths+=[['//div[@id="joblist-container"]//li//a/text()',
         '//div[@id="joblist-container"]//li//span/text()',
         '//div[@id="joblist-container"]//li//a/@href',
         '//div[@id="joblist-container"]//span[@class="dept-title"]/text()']]
 
-#airbnb
+    #airbnb
 paths+=[['//table[@class="table table-striped jobs"]//tr/td[1]/a/text()',
         '//table[@class="table table-striped jobs"]//tr/td[2]/a/text()',
         '//table[@class="table table-striped jobs"]//tr/td[1]/a/@href',
@@ -32,13 +44,19 @@ paths+=[['//table[@class="table table-striped jobs"]//tr/td[1]/a/text()',
         '//main//a[@class="jobs-card link-reset"]/@href']]
 
   
-#yext
+    #yext
 paths+=[['//div[@id="openpositions"]//div[contains(@class, "jobs__category-block") ]//span[@class="jobs__post-title"]//text()',
         '//div[@id="openpositions"]//div[contains(@class, "jobs__category-block") ]//span[@class="jobs__post-city"]//text()',
         '//div[@id="openpositions"]//div[contains(@class, "jobs__category-block") ]//a[@class="jobs__post-item"]/@href',
         '//div[@id="openpositions"]//div[contains(@class, "jobs__category-block") ]//span[@class="jobs__category-name"]//text()']]
 
+    #Twillio    @Greenhouse [3]
+    #Yext       @Greenhouse [3]
 
+paths+=[['//div[@class="opening"]/a/text()',
+        '//div[@class="opening"]/span/text()',
+        '//div[@class="opening"]/a/@href',
+        '//div[@id="main"]/section[@class="level-0"]/h2/text()']]
 
 
 # site scrape
@@ -47,20 +65,12 @@ def scrape(site, path):
     tree = html.fromstring(page.content)
     
     positions = tree.xpath(path[0])
- 
     locations = tree.xpath(path[1])
-
     links = tree.xpath(path[2])
 
     categories = tree.xpath(path[3])
 
-
-
-    #contents = page.content
-    #print (positions)
-    #print (links)
-
-    out=[positions,locations,links]
+    out=[positions,locations,links, categories]
 
     return out
 
@@ -70,7 +80,14 @@ def scrape2(site, path):
     doc = requests.get(site)
     tree = html.fromstring(doc.content)
     pages=tree.xpath(path[4])
-    #print(pages)
+    fullpages=[]
+    thesite=site[:site.find('/', site.find('//')+2)]
+    ## complete the links to category pages
+    for page in pages:
+        page=thesite+page
+        fullpages.append(page)
+        pass
+    pages=fullpages
     
     categories = tree.xpath(path[3])
     ###todo clean cats
@@ -83,8 +100,9 @@ def scrape2(site, path):
     for page in pages:
         # for local testing 
         if not 'localhost' in page:  
-            continue
-        #print(page+' local')
+            pass
+            #continue
+
         doc = requests.get(page)
         tree = html.fromstring(doc.content)
         
@@ -92,26 +110,51 @@ def scrape2(site, path):
         locations += tree.xpath(path[1])
         links += tree.xpath(path[2])
 
+    ## complete the links 
+    fulllinks=[]
+    for link in links:
+        link=thesite+link
+        fulllinks.append(link)
+        pass
+    links=fulllinks
+
     out=[positions,locations,links]
-    #out=pages
 
     return out
 
 def scrapers():
     out=[]
-    out+=[scrape(sites[0], paths[0])]
-    out+=[scrape2(sites[1], paths[1])]
-    out+=[scrape(sites[2], paths [2])]
+    out+=[scrape(sites[6], paths[3])]   #Twillio thru Greenhouse 6,8
+    out+=[scrape2(sites[1], paths[1])]  #AirBnB
+    out+=[scrape(sites[7], paths [3])]  #Yext thru Greenhouse   7,9
     return out
-
 
 def update():
     pass
+
+
+def test(site, path):
+    r = requests.get(site)
+    tree = html.fromstring(r.content)
+
+    positions = tree.xpath(path[0])
+    locations = tree.xpath(path[1])
+    links = tree.xpath(path[2])
+    categories = tree.xpath(path[3])
+
+    out=[positions,locations,links, categories ]
+    return out
+
+
 
 #main
 if __name__=="__main__":
     #scrape(sites[0], paths)
     #print(scrape2(sites[1], paths))
-    stuff=scrapers()
-    print(len(stuff[2][0]))
-    print(stuff[2])
+    stuff=test(sites[9],paths[3])
+    #print(len(stuff[0][0]))
+    
+    print(stuff[0])
+    print(len(stuff[0]) )
+    print(len(stuff[1]) )
+    print(len(stuff[2]) )
