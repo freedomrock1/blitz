@@ -12,7 +12,7 @@
     <style >
 
     </style>
-    <title>Challenge{% block title %} {% endblock %} Page</title>
+    <title>{% block title %} {% endblock %} Page</title>
     {% endblock %}
 </head>
 <body>
@@ -22,8 +22,7 @@
                     <a class="navbar-brand" href="/">Challenge</a>
                   </div>
                   <ul class="nav navbar-nav">
-                  <!--
-                    <li ><a href="?">Home</a></li>   -->
+
                     <li ><a href="/">Main</a></li>
                     <li ><a href="{{ url_for('companies') }}">Company Menu</a></li>
                     <li ><a href="{{ url_for('jobs', company='Twillio')  }}">Job Listings</a></li>
@@ -41,6 +40,8 @@
               </nav> 
               
     <div id="content">{% block content %}{% endblock %}</div>
+
+
     {% block footer %}
     <div id="footer">
         &copy; Copyright 2018 by <a href="">CHF</a>.
