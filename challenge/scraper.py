@@ -82,12 +82,15 @@ def scrape2(site, path):
     pages=tree.xpath(path[4])
     fullpages=[]
     thesite=site[:site.find('/', site.find('//')+2)]
+    #print(thesite)
     ## complete the links to category pages
     for page in pages:
-        page=thesite+page
+        if page.find('http')<0:
+            page=thesite+page
         fullpages.append(page)
         pass
     pages=fullpages
+    #print(pages)
     
     categories = tree.xpath(path[3])
     ###todo clean cats
@@ -101,7 +104,7 @@ def scrape2(site, path):
         # for local testing 
         if not 'localhost' in page:  
             pass
-            #continue
+            continue
 
         doc = requests.get(page)
         tree = html.fromstring(doc.content)
@@ -118,15 +121,15 @@ def scrape2(site, path):
         pass
     links=fulllinks
 
-    out=[positions,locations,links]
+    out=[positions,locations,links,categories]
 
     return out
 
 def scrapers():
     out=[]
-    out+=[scrape(sites[6], paths[3])]   #Twillio thru Greenhouse 6,8
-    out+=[scrape2(sites[1], paths[1])]  #AirBnB
-    out+=[scrape(sites[7], paths [3])]  #Yext thru Greenhouse   7,9
+    out+=[scrape(sites[6+2], paths[3])]   #Twillio thru Greenhouse 6,8
+    out+=[scrape2(sites[1+3], paths[1])]  #AirBnB
+    out+=[scrape(sites[7+2], paths [3])]  #Yext thru Greenhouse   7,9
     return out
 
 def update():

@@ -2,7 +2,7 @@
 from flask import Flask
 from flask import render_template, g 
 import scraper
-
+import time
 
 #globals
 app = Flask(__name__)
@@ -11,6 +11,9 @@ app = Flask(__name__)
 companylist=scraper.companies
 
 stuff=scraper.scrapers()
+lastscrape=time.time()
+interval=scraper.interval
+
 #defs
 
 
@@ -22,8 +25,8 @@ def index():
 
 @app.route('/companies')
 def companies():
-    print(companylist[0])
-    return render_template('companies.html', companies=companylist)
+    #print(companylist[0])
+    return render_template('companies.html', companies=companylist, timestamp=lastscrape)
 
 @app.route('/jobs/')
 def jobs0():
@@ -31,24 +34,31 @@ def jobs0():
     index=0
     redderedDoc=render_template('jobs.html', company_name=company, 
         positions=stuff[index][0], locations=stuff[index][1], links=stuff[index][2], jobs=stuff)
-    print(company+"\n")
+
     return redderedDoc
 
 @app.route('/jobs/<company>')
 def jobs(company):
     index=companylist.index(company)
-    #print(company+" = "+index)
-    print(index)
     redderedDoc=render_template('jobs.html', company_name=company, 
-        positions=stuff[index][0], locations=stuff[index][1], links=stuff[index][2], jobs=stuff)
-    print(company+"\n")
+        positions=stuff[index][0], locations=stuff[index][1], links=stuff[index][2], jobs=stuff, 
+        timestamp=time.asctime(time.localtime(lastscrape)))
+
     return redderedDoc
 
 @app.before_request
 def before_request():
-    #check for updates
-    pass
+    #check interval
+    global lastscrape
+    #global interval
+    global stuff
 
+    if time.time()-lastscrape>interval:
+        lastscrape=time.time()
+        stuff=scraper.scrapers()
+        pass
+    print("Last Scrape :  "+str(lastscrape))
+    pass
 
 # main
 
