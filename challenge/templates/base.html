@@ -5,12 +5,14 @@
     {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
   
-    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery.min.js ') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
   
     <link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}" />
     <style >
-
+      h1{
+        margin-left: 10px;
+      }
     </style>
     <title>{% block title %} {% endblock %} Page</title>
     {% endblock %}
@@ -23,9 +25,9 @@
                   </div>
                   <ul class="nav navbar-nav">
 
-                    <li ><a href="/">Main</a></li>
+                    <li ><a href="/main">Main</a></li>
                     <li ><a href="{{ url_for('companies') }}">Company Menu</a></li>
-                    <li ><a href="{{ url_for('jobs', company='Twillio')  }}">Job Listings</a></li>
+                    <li ><a href="{{ url_for('jobs', company='')  }}">Job Listings</a></li>
 
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
@@ -43,7 +45,7 @@
 
 
     {% block footer %}
-    <div id="footer">
+    <div id="footer" class="col-sm-12">
         &copy; Copyright 2018 by <a href="">CHF</a>.
     </div>
     {% endblock %}

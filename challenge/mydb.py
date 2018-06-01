@@ -8,24 +8,30 @@ myCursor = mydb.cursor()
 #connect
 def dbconnect():
     # Open database connection
-    db = pymysql.connect("localhost","root","","InternBlitz" )
-    cursor = db.cursor()
+    global mydb
+    mydb = pymysql.connect("localhost","root","","InternBlitz" )
+    cursor = mydb.cursor()
     cursor.execute("use internblitz")
-    db.close()
-
+    return cursor
+    
+def dbclose():
+    global mydb
+    mydb.close()
 
 def gettabels():
-    db = pymysql.connect("localhost","root","","InternBlitz" )
-    cursor = db.cursor()
+    global mydb
+    dbconnect()
+    cursor = mydb.cursor()
     query="show tables;"
     
     cursor.execute(query)
     for row in cursor:
         print(row)
 
-    db.close()
+    mydb.close()
 
 def instertJob(job):
+    #
     pass
 
 def instertJobs(jobs):
@@ -34,8 +40,7 @@ def instertJobs(jobs):
 #return a list of jobs
 def getJobs():
     jobs=[]
-    db = pymysql.connect("localhost","root","","InternBlitz" )
-    cursor = db.cursor()
+    cursor = dbconnect()
     query="select * from jobs where cid="+1+";"
     
     cursor.execute(query)
@@ -47,7 +52,7 @@ def getJobs():
 
 
 
-    db.close()
+    mydb.close()
 
     return jobs
 
@@ -56,4 +61,6 @@ def getJobs():
 #main
 if __name__=="__main__":
     dbconnect()
+    dbclose()
+
     gettabels()
