@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %} Jobs {% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <style type="text/css">
+        .important { color: #336699; }
+        .panel-body{
+            margin:10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1>Welcome to the {{company_name}} Job List!</h1>
+        <div  class="container">
+            {% for position in positions  %}
+                <div class="card col-sm-3" style="height:18rem; "> 
+                    <div class="card-header">{{ loop.index }}) {{position}}</div> 
+                    <div class="card-body"> 
+                        <h5 class="card-title">{{ locations[loop.index-1] }} </h5>
+                        <p class="card-text"> <a href="{{ links[loop.index-1] }}" class="btn btn-primary">Job Site</a></p>
+                    </div>
+                </div>
+            {% endfor %}
+
+
+            <div class="panel  panel-default col-sm-12"> 
+
+                <div class="panel-body">
+            Last update: {{ timestamp }} 
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
