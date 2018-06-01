@@ -43,6 +43,26 @@ def jobs0():
 
     return redderedDoc
 
+@app.route('/jobs1/')
+def jobs1():
+    company="Twillio"
+    index=0
+    redderedDoc=render_template('jobspage.1.html', company_name=company, 
+        positions=stuff[index][0], locations=stuff[index][1], links=stuff[index][2], jobs=stuff,
+        timestamp=time.asctime(time.localtime(lastscrape)))
+
+    return redderedDoc
+
+@app.route('/jobs2/')
+def jobs2():
+    company="Twillio"
+    index=0
+    redderedDoc=render_template('jobspage.2.html', company_name=company, 
+        positions=stuff[index][0], locations=stuff[index][1], links=stuff[index][2], jobs=stuff,
+        timestamp=time.asctime(time.localtime(lastscrape)))
+
+    return redderedDoc
+
 @app.route('/jobs/<company>')
 def jobs(company):
     if company not in companylist:
