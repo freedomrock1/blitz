@@ -1,0 +1,47 @@
+{% extends "base.m.html" %}
+
+{% block title %} Jobs {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-4.1.1.min.css') }}">
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap-4.1.1.min.js') }}"></script>
+  
+    <link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}" />
+    <style type="text/css">
+        .important { color: #336699; }
+        .panel-body{
+            margin:10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1>Welcome to the {{company_name}} Job List!</h1>
+        <div  class="container"> 
+            <div class="row col-mb-3 ">
+            {% for position in positions  %}
+           
+                <div class="card col-mb-4 box-shadow"> 
+                    <div class="card-header">{{ loop.index }}) {{position}}</div> 
+                    <div class="card-body"> 
+                        <h5 class="card-title">{{ locations[loop.index-1] }} </h5>
+                        <p class="card-text"> <a href="{{ links[loop.index-1] }}" class="btn btn-primary">Job Site</a></p>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+
+            <div class="panel  panel-default col-sm-12"> 
+
+                <div class="panel-body">
+            Last update: {{ timestamp }} 
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
